@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.cursedshrine</groupId>
-    <artifactId>api-nexus</artifactId>
+    <artifactId>mecca-api-project</artifactId>
     <version>1.0.0</version>
-    <name>api-nexus</name>
+    <name>mecca-api-project</name>
     <description>Middleware connector: routes requests to downstream APIs via controller → service → manager → adapter pipeline</description>
 
     <properties>
