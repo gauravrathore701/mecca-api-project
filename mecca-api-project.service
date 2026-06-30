@@ -1,0 +1,17 @@
+[Unit]
+Description=Mecca API Project (Spring Boot middleware connector)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gaurav
+WorkingDirectory=/home/gaurav/Projects/mecca-api-project
+ExecStart=/usr/bin/java -jar /home/gaurav/Projects/mecca-api-project/target/mecca-api-project-1.0.0.jar
+Restart=always
+RestartSec=10
+Environment=PORT=4181
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target
