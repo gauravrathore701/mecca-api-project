@@ -41,7 +41,7 @@ DTO→Entity translation happens in Service. Entity→Proxy translation happens 
 ## Domains
 
 ### auth (`/auth`)
-Proxies to the Rust auth API (`AUTH_API_URL`, default `localhost:4179`)
+Proxies to the Rust auth API (`AUTH_API_URL`, default `localhost:4183`)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -61,7 +61,7 @@ Proxies to Mail-Service (`MAIL_API_URL`, default `localhost:7070`)
 
 ```
 PORT=4181
-AUTH_API_URL=http://localhost:4179
+AUTH_API_URL=http://localhost:4183
 MAIL_API_URL=http://localhost:7070
 ```
 
