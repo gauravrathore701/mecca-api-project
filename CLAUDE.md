@@ -17,6 +17,10 @@ Each domain (auth, notification) is fully self-contained with its own package tr
 
 Default: **4181** (`PORT` env var overrides)
 
+All routes are served under the context path **`/api`**, set by
+`SERVER_SERVLET_CONTEXT_PATH` in the systemd unit (not in
+`application.properties`) — e.g. `POST /api/auth/login`.
+
 ## Architecture
 
 ```
@@ -50,6 +54,23 @@ Proxies to the Rust auth API (`AUTH_API_URL`, default `localhost:4183`)
 
 RegisterRequestDto captures extra JSON fields via `@JsonAnySetter` into a `Map<String, Object> extras` — these get forwarded as-is.
 
+### progress (`/progress`)
+Cross-device watch progress for shows-app. Proxies to the same Rust auth API
+(`AUTH_API_URL`) — that service owns the Mongo collection and verifies the JWT,
+so no persistence or token decoding happens here.
+
+Every route requires `Authorization: Bearer <jwt>`; the header is forwarded
+untouched. A missing header returns 401 via `GlobalExceptionHandler`.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/progress` | Upsert `{show, path, position, duration, finished?}` |
+| GET | `/progress` | Latest episode per show |
+| GET | `/progress?show=X` | All episodes watched in show X, newest first |
+
+`show` is the watch key (`"One Piece"`, or `"GOT/Season 03"` for seasonal
+shows); `path` is the episode filename.
+
 ### notification (`/notification`)
 Proxies to Mail-Service (`MAIL_API_URL`, default `localhost:7070`)
 
@@ -74,7 +95,7 @@ Copy `.env.example` → `.env` and fill in values.
 mvn clean package -q
 
 # Run
-java -jar target/api-nexus-1.0.0.jar
+java -jar target/mecca-api-project-1.0.0.jar
 ```
 
 ## Adding a new domain
