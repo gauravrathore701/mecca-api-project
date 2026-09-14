@@ -13,7 +13,7 @@ public class NotificationManager {
 
     private final NotificationAdapter adapter;
 
-    public Map<String, Object> send(NotificationEntity entity) {
-        return adapter.send(entity);
+    public Map<String, Object> subscribe(NotificationEntity entity) {
+        return adapter.subscribe(entity);
     }
 }

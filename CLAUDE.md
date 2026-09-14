@@ -76,7 +76,10 @@ Proxies to Mail-Service (`MAIL_API_URL`, default `localhost:7070`)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/notification/send` | Dispatches a notification via mail service |
+| POST | `/notification/subscribe` | Save a subscriber `{name, email}` → Mail-Service `POST /save/subscriber` (header `clientId: api-nexus`). 400 on blank name / bad email, 201 on success |
+
+Changed 2026-09-13: was `/notification/send` `{to, from, subject, body}`, which never
+worked — Mail-Service only has `/save/subscriber {name, email}`, so every call 422'd.
 
 ## Environment
 
@@ -107,4 +110,8 @@ java -jar target/mecca-api-project-1.0.0.jar
 
 ## Error Handling
 
-`GlobalExceptionHandler` catches WebClientResponseException (downstream errors) and generic exceptions, returning structured JSON with `success: false` and the status code.
+`GlobalExceptionHandler` returns `{success: false, message, status}` and **never leaks internal detail** (downstream hosts/ports/paths, exception text) — full detail is logged only:
+- `WebClientResponseException` → downstream status + the downstream's own JSON `error`/`message` string (≤200 chars), else the reason phrase
+- `WebClientRequestException` (downstream unreachable) → 502 `upstream service unavailable`
+- `MissingRequestHeaderException` → 401; malformed JSON → 400; unknown route → 404; wrong method → 405
+- anything else → 500 `internal error`

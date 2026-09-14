@@ -14,13 +14,11 @@ public class NotificationService {
 
     private final NotificationManager manager;
 
-    public Map<String, Object> send(NotificationRequestDto dto) {
+    public Map<String, Object> subscribe(NotificationRequestDto dto) {
         NotificationEntity entity = NotificationEntity.builder()
-                .recipient(dto.getTo())
-                .sender(dto.getFrom())
-                .subject(dto.getSubject())
-                .content(dto.getBody())
+                .subscriberName(dto.getName().trim())
+                .subscriberEmail(dto.getEmail().trim())
                 .build();
-        return manager.send(entity);
+        return manager.subscribe(entity);
     }
 }

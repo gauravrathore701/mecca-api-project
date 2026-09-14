@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class NotificationEntity {
-    private String recipient;
-    private String subject;
-    private String content;
-    private String sender;
+    private String subscriberName;
+    private String subscriberEmail;
 }

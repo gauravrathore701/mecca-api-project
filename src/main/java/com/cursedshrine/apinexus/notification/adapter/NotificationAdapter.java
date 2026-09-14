@@ -17,20 +17,20 @@ public class NotificationAdapter {
         this.client = client;
     }
 
-    public Map<String, Object> send(NotificationEntity entity) {
+    public Map<String, Object> subscribe(NotificationEntity entity) {
         NotificationProxy proxy = NotificationProxy.builder()
-                .to(entity.getRecipient())
-                .from(entity.getSender())
-                .subject(entity.getSubject())
-                .body(entity.getContent())
+                .name(entity.getSubscriberName())
+                .email(entity.getSubscriberEmail())
                 .build();
 
-        return client.post()
+        // Mail-Service replies 201 with an empty body, so there is nothing to map.
+        client.post()
                 .uri("/save/subscriber")
                 .header("clientId", "api-nexus")
                 .bodyValue(proxy)
                 .retrieve()
-                .bodyToMono(Map.class)
+                .toBodilessEntity()
                 .block();
+        return Map.of();
     }
 }
