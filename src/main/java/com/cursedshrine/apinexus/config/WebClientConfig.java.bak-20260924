@@ -26,19 +26,9 @@ public class WebClientConfig {
     @Value("${downstream.mail.base-url}")
     private String mailBaseUrl;
 
-    // The auth API gates every route on X-Client-Id and mecca is the shows
-    // backend, so every call it makes is on behalf of shows_project. Sent as a
-    // default header here rather than in each adapter — mecca stays a pure
-    // connector and no call site can forget it.
-    @Value("${downstream.auth.client-id}")
-    private String authClientId;
-
     @Bean("authWebClient")
     public WebClient authWebClient() {
-        return buildClient(authBaseUrl)
-                .mutate()
-                .defaultHeader("X-Client-Id", authClientId)
-                .build();
+        return buildClient(authBaseUrl);
     }
 
     @Bean("mailWebClient")

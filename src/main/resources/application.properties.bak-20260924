@@ -3,8 +3,6 @@ server.port=${PORT:4181}
 # Downstream API base URLs
 downstream.auth.base-url=${AUTH_API_URL:http://localhost:4183}
 downstream.mail.base-url=${MAIL_API_URL:http://localhost:7070}
-# Tenant mecca authenticates as against the auth API (X-Client-Id header).
-downstream.auth.client-id=${AUTH_CLIENT_ID:shows_project}
 
 # WebClient timeouts (ms)
 webclient.connect-timeout=5000
